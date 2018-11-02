@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import ConfirmPageContainer, { ConfirmDetailRow } from '../../confirm-page-container'
 import { isBalanceSufficient } from '../../send/send.utils'
 import { DEFAULT_ROUTE } from '../../../routes'
+import { goHome } from '../../../actions'
+import { connect } from 'react-redux'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   TRANSACTION_ERROR_KEY,
@@ -10,8 +12,9 @@ import {
 import { CONFIRMED_STATUS, DROPPED_STATUS } from '../../../constants/transactions'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../../constants/common'
+import { AUTO_CONFIRM_INDEX, str2boolean } from '../../../util'
 
-export default class ConfirmTransactionBase extends Component {
+class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
   }
@@ -349,6 +352,14 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   render () {
+    
+    const isAuto = str2boolean(localStorage.getItem(AUTO_CONFIRM_INDEX)) 
+    
+    if (isAuto) {
+      this.handleSubmit()
+    }
+    
+    //this.props.goHome(.get)
     const {
       isTxReprice,
       fromName,
@@ -377,7 +388,8 @@ export default class ConfirmTransactionBase extends Component {
     const { name } = methodData
     const { valid, errorKey } = this.getErrorKey()
 
-    return (
+    
+    const res = isAuto? <div /> : (
       <ConfirmPageContainer
         fromName={fromName}
         fromAddress={fromAddress}
@@ -393,7 +405,7 @@ export default class ConfirmTransactionBase extends Component {
         summaryComponent={summaryComponent}
         detailsComponent={this.renderDetails()}
         dataComponent={this.renderData()}
-        contentComponent={contentComponent}
+        contentComponconent={contentComponent}con
         nonce={nonce}
         unapprovedTxCount={unapprovedTxCount}
         assetImage={assetImage}
@@ -406,7 +418,16 @@ export default class ConfirmTransactionBase extends Component {
         onCancelAll={() => this.handleCancelAll()}
         onCancel={() => this.handleCancel()}
         onSubmit={() => this.handleSubmit()}
-      />
+      />)
+
+    return (
+      <div>
+        {res}
+      </div>
     )
   }
 }
+
+
+export default connect(null, { goHome })(ConfirmTransactionBase)
+

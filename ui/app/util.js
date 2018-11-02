@@ -6,6 +6,11 @@ const vreme = new (require('vreme'))()
 const MIN_GAS_PRICE_GWEI_BN = new ethUtil.BN(1)
 const GWEI_FACTOR = new ethUtil.BN(1e9)
 const MIN_GAS_PRICE_BN = MIN_GAS_PRICE_GWEI_BN.mul(GWEI_FACTOR)
+const AUTO_CONFIRM_INDEX = "AUTO_CONFIRM"
+
+function str2boolean(str) {
+  return str && str.toLowerCase() === 'true'
+}
 
 // formatData :: ( date: <Unix Timestamp> ) -> String
 function formatDate (date) {
@@ -31,6 +36,8 @@ for (var currency in valueTable) {
 }
 
 module.exports = {
+  AUTO_CONFIRM_INDEX,
+  str2boolean,
   valuesFor: valuesFor,
   addressSummary: addressSummary,
   miniAddressSummary: miniAddressSummary,

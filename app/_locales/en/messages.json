@@ -285,6 +285,12 @@
   "deposit": {
     "message": "Deposit"
   },
+  "autoconfirmon": {
+    "message": "Auto: ON"
+  },
+  "autoconfirmoff": {
+    "message": "Auto: OFF"
+  },
   "depositBTC": {
     "message": "Deposit your BTC to the address below:"
   },
